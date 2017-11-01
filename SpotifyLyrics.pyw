@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-import backend
-import time
-import threading
 import os
 import re
 import subprocess
+import threading
+import time
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+import backend
 
 if os.name == "nt":
     import ctypes
@@ -271,7 +273,8 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Spotify Lyrics - {}".format(backend.version())))
+        Form.setWindowTitle(_translate("Form", "Spotify Lyrics - {}".format(
+            backend.version())))
         Form.setWindowIcon(QtGui.QIcon(self.resource_path('icon.png')))
         if backend.versioncheck() == True:
             self.label_songname.setText(_translate("Form", "Spotify Lyrics"))

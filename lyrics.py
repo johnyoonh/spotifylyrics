@@ -42,7 +42,7 @@ def MiniLyrics(artist, title):
     search_query_base = "<?xml version='1.0' encoding='utf-8' standalone='yes' ?><searchV1 client=\"ViewLyricsOpenSearcher\" artist=\"{artist}\" title=\"{title}\" OnlyMatched=\"1\" />"
     search_useragent = "MiniLyrics"
     search_md5watermark = b"Mlv1clt4.0"
-    proxy = urllib.request.getproxies()
+    proxy = urllib.getproxies()
 
     # hex is a registered value in python, so i used hexx as an alternative
     def hexToStr(hexx):
@@ -99,7 +99,7 @@ def MiniLyrics(artist, title):
             r = requests.post(url, data=data, headers=headers, proxies=proxy)
             return (r.text)
         except Exception as exceptio:
-            print(exceoptio)
+            print(exceptio)
             pass
         # if the request was denied, or the connection was interrupted, retrying. (up to five times)
         fail_count = 0
@@ -133,7 +133,10 @@ def MiniLyrics(artist, title):
             if isinstance(data[i], int):
                 result += chr(data[i] ^ magickey)
             else:
-                result += chr(ord(data[i]) ^ magickey)
+                token = ord(data[i]) ^ magickey
+                result += unichr(token)
+                # if token < 256:
+                #     result += chr(token)
         return (result)
 
     if ('search_result' not in locals()):
@@ -188,7 +191,7 @@ def MiniLyrics(artist, title):
 
 # function to return lyrics grabbed from lyricwikia
 def LyricWikia(artist, title):
-    proxy = urllib.request.getproxies()
+    proxy = urllib.getproxies()
     url = 'http://lyrics.wikia.com/api.php?action=lyrics&artist={artist}&song={title}&fmt=json&func=getSong'.format(artist=artist,
                                                                                                                     title=title).replace(" ","%20")
     r = requests.get(url, timeout=15, proxies=proxy)
